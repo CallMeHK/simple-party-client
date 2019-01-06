@@ -1,25 +1,75 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
-</template>
-<style lang="stylus">
-#app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
+  <v-app dark>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>simple-party</span>
 
-#nav
-  padding 30px
-  a
-    font-weight bold
-    color #2c3e50
-    &.router-link-exact-active
-      color #42b983
-</style>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items v-if='!user'>
+        <v-btn :to="{ name: 'login' }">Login</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-if='user'>
+        <v-btn @click="toChar">Character</v-btn>
+      </v-toolbar-items>
+      <v-toolbar-items v-if='user'>
+        <v-btn @click="toParty">Party</v-btn>
+      </v-toolbar-items>
+       <v-toolbar-items v-if='user'>
+        <v-btn @click="logout">Logout</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+    <v-footer
+      :fixed="fixed"
+      app
+    >
+      <span>&copy; 2018 by Ty</span>
+    </v-footer>
+  </v-app>
+</template>
+
+<script>
+import { mapState, mapMutations, mapActions } from 'vuex';
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      fixed: false,
+    };
+  },
+  computed: {
+    ...mapState('auth', { user: 'payload' }),
+
+
+  },
+  methods: {
+    ...mapMutations('char', [
+      'clearAll', // lets you do `this.clearAll()` inside the component
+    ]),
+    ...mapActions('auth', { authLogout: 'logout' }),
+    logout() {
+      this.authLogout().then(
+        () => {
+          this.clearAll();
+          this.$router.push('login');
+        },
+      );
+    },
+    toChar(){
+      if (this.$router.history.current.name!='charactersheet'){
+      this.clearAll();
+      this.$router.push('charactersheet');
+      }
+    },
+    toParty(){
+      //this.clearAll();
+      this.$router.push('myparty');
+    },
+  },
+};
+</script>
