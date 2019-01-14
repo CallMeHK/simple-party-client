@@ -25,34 +25,34 @@
 
 <script>
 export default {
-  name: "SimpleChar",
+  name: 'SimpleChar',
   props: {
-    char: Object
+    char: Object,
   },
   data: () => ({
-    animate: ""
+    animate: '',
   }),
   computed: {
     bar() {
-      console.log("bar changed");
-      this.animate = "animate-sc";
+      console.log('bar changed');
+      this.animate = 'animate-sc';
       this.activate();
 
       return (this.char.hp.current * 100) / this.char.hp.total;
-    }
+    },
   },
   watch: {
     char: () => {
-      console.log("bar changed");
-      this.animate = "animate";
+      console.log('bar changed');
+      this.animate = 'animate';
       this.activate();
-    }
+    },
   },
   methods: {
     activate() {
-      setTimeout(() => (this.animate = "nope-sc"), 300);
-    }
-  }
+      setTimeout(() => (this.animate = 'nope-sc'), 300);
+    },
+  },
 };
 </script>
 

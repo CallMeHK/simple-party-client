@@ -60,14 +60,14 @@ export default {
         },
       );
     },
-    toChar(){
-      if (this.$router.history.current.name!='charactersheet'){
-      this.clearAll();
-      this.$router.push('charactersheet');
+    toChar() {
+      if (this.$router.history.current.name != 'charactersheet') {
+        this.clearAll();
+        this.$router.push('charactersheet');
       }
     },
-    toParty(){
-      //this.clearAll();
+    toParty() {
+      // this.clearAll();
       this.$router.push('myparty');
     },
   },

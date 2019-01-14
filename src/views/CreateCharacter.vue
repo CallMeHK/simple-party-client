@@ -149,7 +149,7 @@ export default {
     valid: false,
     notEmptyRules: [value => !!value || 'Cannot be empty'],
     char: {
-      name: `char`,
+      name: 'char',
       playerId: '5c16ae5460988a24fc32bc92',
       hp: { total: '30' },
       stats: {
@@ -178,7 +178,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('char', { findChars: 'find', updateChar: "patch" }),
+    ...mapActions('char', { findChars: 'find', updateChar: 'patch' }),
     createChar() {
       if (this.valid) {
         const newChar = this.char;
@@ -189,12 +189,12 @@ export default {
         char.save();
       }
     },
-    updateCharHp(num, sheet){
+    updateCharHp(num, sheet) {
       const id = sheet._id;
-      const data = {hp:sheet.hp}
-      data.hp.current = data.hp.current + num
+      const data = { hp: sheet.hp };
+      data.hp.current = data.hp.current + num;
       const params = {};
-      const paramsArray = [id, data , params ];
+      const paramsArray = [id, data, params];
 
       this.updateChar(paramsArray);
     },

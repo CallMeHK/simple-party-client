@@ -58,14 +58,14 @@
 <script>
 // eslint-disable-next-line
 import { mapState, mapActions, mapGetters } from "vuex";
-import CreateUser from "./CreateUser";
-import CreateCharacter from "./CreateCharacter";
+import CreateUser from './CreateUser';
+import CreateCharacter from './CreateCharacter';
 
 export default {
-  name: "dashboard",
+  name: 'dashboard',
   components: {
     CreateUser,
-    CreateCharacter
+    CreateCharacter,
   },
   mounted() {
     this.findBoards({ query: {} });
@@ -77,48 +77,48 @@ export default {
   data: () => ({
     valid: false,
     drawer: null,
-    page: "CreateUser",
-    notEmptyRules: [value => !!value || "Cannot be empty"],
+    page: 'CreateUser',
+    notEmptyRules: [value => !!value || 'Cannot be empty'],
     board: {
-      name: "",
-      background: ""
-    }
+      name: '',
+      background: '',
+    },
   }),
   computed: {
-    ...mapState("boards", {
-      creating: "isCreatePending",
-      loading: "isFindPending"
+    ...mapState('boards', {
+      creating: 'isCreatePending',
+      loading: 'isFindPending',
     }),
-    ...mapState("auth", { user: "payload" }),
+    ...mapState('auth', { user: 'payload' }),
 
-    ...mapGetters("boards", { findBoardsInStore: "find" }),
+    ...mapGetters('boards', { findBoardsInStore: 'find' }),
 
     boards() {
       return this.user
         ? this.findBoardsInStore({
-            query: {
-              ownerId: this.user.userId
-            }
-          }).data
+          query: {
+            ownerId: this.user.userId,
+          },
+        }).data
         : [];
-    }
+    },
   },
   methods: {
-    ...mapActions("boards", { findBoards: "find" }),
+    ...mapActions('boards', { findBoards: 'find' }),
     createBoard() {
       if (this.valid) {
         const { Board } = this.$FeathersVuex;
         const board = new Board(this.board);
         board.save();
         this.board = {
-          name: "",
-          background: ""
+          name: '',
+          background: '',
         };
       }
     },
     sleep(time) {
       return new Promise(resolve => setTimeout(resolve, time));
-    }
-  }
+    },
+  },
 };
 </script>

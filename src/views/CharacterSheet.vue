@@ -18,7 +18,7 @@
           sm4
           v-if='sheet!=undefined'
         >
-          <v-card>
+          <v-card class='mb-3'>
             <v-card-title style="flex-direction: column;">
               <div class="headline">
                 {{sheet.name}}
@@ -92,6 +92,8 @@
               </div>
             </v-card-title>
           </v-card>
+          <feats></feats>
+          <spells></spells>
         </v-flex>
 
       </v-layout>
@@ -102,50 +104,54 @@
 <script>
 // eslint-disable-next-line
 import { mapState, mapActions, mapGetters } from "vuex";
+import Feats from '../components/Feats.vue';
+import Spells from '../components/Spells.vue';
 
 export default {
-  name: "CharacterSheet",
+  name: 'CharacterSheet',
+  components: {
+    Feats,
+    Spells
+  },
   mounted() {
     this.findChars({
       query: {
         playerId: this.userobj._id,
-        $limit: 1
-      }
+        $limit: 1,
+      },
     })
-    .then((res) => {
-      //console.log(res.data[0].partyId)
-      this.getParty(res.data[0].partyId).catch(e => console.log(`findParty error: ${e}`));
-    });
-    //5c1a69db6e09a90a6cb8e20d
+      .then((res) => {
+        this.getParty(res.data[0].partyId).catch(e => console.log(`findParty error: ${e}`));
+      });
   },
   data: () => ({
     valid: false,
-    notEmptyRules: [value => !!value || "Cannot be empty"],
+    notEmptyRules: [value => !!value || 'Cannot be empty'],
     edit: {
-      stats: false
+      stats: false,
     },
     char: {
-      stats: {}
-    }
+      stats: {},
+    },
   }),
   computed: {
-    ...mapState("char", {
-      creating: "isCreatePending",
-      loading: "isFindPending"
+    ...mapState('char', {
+      creating: 'isCreatePending',
+      loading: 'isFindPending',
     }),
-    ...mapState("auth", { user: "payload", userobj: "user" }),
+    ...mapState('auth', { user: 'payload', userobj: 'user' }),
 
-    ...mapGetters("char", { findCharsInStore: "find" }),
+    ...mapGetters('char', { findCharsInStore: 'find' }),
 
     sheet() {
       const sheets = this.findCharsInStore({});
       console.log(sheets.data);
       return sheets.data[0];
-    }
+    },
   },
   methods: {
-    ...mapActions("char", { findChars: "find", updateChar: "patch" }),
-    ...mapActions("party", { findParty: "find", updateParty: "patch", getParty:"get" }),
+    ...mapActions('char', { findChars: 'find', updateChar: 'patch' }),
+    ...mapActions('party', { findParty: 'find', updateParty: 'patch', getParty: 'get' }),
 
     createChar() {
       if (this.valid) {
@@ -177,8 +183,8 @@ export default {
     },
     sleep(time) {
       return new Promise(resolve => setTimeout(resolve, time));
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
